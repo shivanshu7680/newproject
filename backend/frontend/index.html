@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Soil Nutrient Predictor (U.P. Villages)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🧪 AI Soil Nutrient Prediction </h1>
+
+  <div class="card">
+    <label for="village">Select District</label>
+    <select id="village">
+      <option value="">-- Choose District --</option>
+    </select>
+
+    <label>Latitude</label>
+    <input id="lat" type="text" readonly>
+    <label>Longitude</label>
+    <input id="lon" type="text" readonly>
+    <button id="predict">Predict Nutrients</button>
+  </div>
+
+  <div class="card" id="result">
+    <h2>Results</h2>
+    <div id="output"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
