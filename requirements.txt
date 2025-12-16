@@ -1,0 +1,6 @@
+﻿earthengine-api
+numpy
+pandas
+Flask
+Flask-Cors
+gunicorn
