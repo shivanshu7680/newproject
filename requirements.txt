@@ -1,7 +1,8 @@
 flask
 flask-cors
+joblib
 numpy
 pandas
 scikit-learn
-joblib
 gunicorn
+earthengine-api
