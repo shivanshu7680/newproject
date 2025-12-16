@@ -1,22 +1,25 @@
 import ee
 import numpy as np
 import pandas as pd
+import os
+import json
 
-# 🌍 Initialize Earth Engine
+# 🌍 Initialize Earth Engine using service account (for server deployment)
 PROJECT_ID = 'calm-acre-472904-c1'
 
-def initialize_ee():
-    """Initialize Earth Engine safely."""
-    try:
-        ee.Initialize(project=PROJECT_ID)
-        print(f"✅ Earth Engine initialized with project: {PROJECT_ID}")
-    except Exception as e:
-        print("⚠️ Re-authenticating Earth Engine...")
-        ee.Authenticate()
-        ee.Initialize(project=PROJECT_ID)
-        print(f"✅ Earth Engine authenticated and initialized with project: {PROJECT_ID}")
+# Load service account JSON from environment variable
+SERVICE_ACCOUNT_INFO = json.loads(os.environ.get("EE_SERVICE_ACCOUNT"))
 
-initialize_ee()
+CREDENTIALS = ee.ServiceAccountCredentials(
+    SERVICE_ACCOUNT_INFO['client_email'],
+    key_file=None,
+    private_key=SERVICE_ACCOUNT_INFO['private_key']
+)
+
+# Initialize EE
+ee.Initialize(CREDENTIALS, project=PROJECT_ID)
+print(f"✅ Earth Engine initialized with project: {PROJECT_ID}")
+
 
 # --- Function to add vegetation and soil indices ---
 def add_indices(image):
@@ -33,7 +36,8 @@ def add_indices(image):
     ).rename('BSI')
     return image.addBands([ndvi, ndmi, savi, bsi])
 
-# --- Function to fetch satellite data for given coordinates ---
+
+# --- Function to fetch satellite data ---
 def get_satellite_data(lon, lat, box_size=0.1):
     geom = ee.Geometry.Rectangle([
         lon - box_size/2, lat - box_size/2,
@@ -59,10 +63,4 @@ def get_satellite_data(lon, lat, box_size=0.1):
 
     df.replace([np.inf, -np.inf], np.nan, inplace=True)
     df.fillna(0, inplace=True)
-
     return df
-
-if __name__ == "__main__":
-    lon, lat = 80.6790, 27.5680
-    df = get_satellite_data(lon, lat)
-    print(df.head())

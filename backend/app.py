@@ -2,16 +2,24 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import numpy as np
+import os
 from ee_processor import get_satellite_data
 
 app = Flask(__name__)
 CORS(app)
 
-# Load models
+# Base directory of the current file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load models from models folder
 print("🧠 Loading AI models...")
-n_model = joblib.load('models/soil_nitrogen_model.joblib')
-p_model = joblib.load('models/soil_phosphorus_model.joblib')
-k_model = joblib.load('models/soil_potassium_model.joblib')
+n_model_path = os.path.join(BASE_DIR, 'models', 'soil_nitrogen_model.joblib')
+p_model_path = os.path.join(BASE_DIR, 'models', 'soil_phosphorus_model.joblib')
+k_model_path = os.path.join(BASE_DIR, 'models', 'soil_potassium_model.joblib')
+
+n_model = joblib.load(n_model_path)
+p_model = joblib.load(p_model_path)
+k_model = joblib.load(k_model_path)
 print("✅ Models loaded.")
 
 def get_fertilizer_suggestion(N, P, K):
@@ -67,4 +75,6 @@ def predict_nutrients():
         return jsonify({"error": str(e)}), 400
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    # Render assigns dynamic port
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
