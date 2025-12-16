@@ -1,4 +1,6 @@
-Flask==2.3.3
-Flask-Cors==3.0.10
+﻿earthengine-api
 numpy
-joblib
+pandas
+Flask
+Flask-Cors
+gunicorn
