@@ -1,27 +1,3 @@
-let villageData = {};
-
-async function loadVillages() {
-  const res = await fetch("village_coords.json");
-  villageData = await res.json();
-
-  const villageSelect = document.getElementById("village");
-  Object.keys(villageData).forEach(village => {
-    const opt = document.createElement("option");
-    opt.value = village;
-    opt.textContent = village;
-    villageSelect.appendChild(opt);
-  });
-}
-
-document.getElementById("village").addEventListener("change", (e) => {
-  const village = e.target.value;
-  if (village && villageData[village]) {
-    const [lat, lon] = villageData[village];
-    document.getElementById("lat").value = lat;
-    document.getElementById("lon").value = lon;
-  }
-});
-
 document.getElementById("predict").addEventListener("click", async () => {
   const lat = parseFloat(document.getElementById("lat").value);
   const lon = parseFloat(document.getElementById("lon").value);
@@ -35,7 +11,7 @@ document.getElementById("predict").addEventListener("click", async () => {
   output.innerHTML = "⏳ Fetching satellite data and predicting...";
 
   try {
-    const res = await fetch("http://127.0.0.1:5000/predict", {
+    const res = await fetch("https://newproject-10-80xp.onrender.com/predict", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ lat, lon })
@@ -61,8 +37,6 @@ document.getElementById("predict").addEventListener("click", async () => {
     }
   } catch (err) {
     console.error("Backend error:", err);
-    output.innerHTML = "⚠️ Cannot connect to backend. Make sure Flask is running.";
+    output.innerHTML = "⚠️ Cannot connect to backend. Make sure Render backend is live.";
   }
 });
-
-loadVillages();
