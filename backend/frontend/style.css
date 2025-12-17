@@ -1,34 +1,133 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Body */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0a192f;
-  color: #e6f1ff;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0b1d3a, #050b18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 15px;
+  color: #ffffff;
+}
+
+/* Main Heading */
+h1 {
+  font-size: 32px;
+  margin-bottom: 25px;
+  color: #ffffff;
   text-align: center;
-  padding: 40px;
 }
+
+h1::before {
+  content: "🧪 ";
+}
+
+/* Card */
 .card {
-  background: #112240;
-  padding: 20px;
-  margin: 20px auto;
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(180deg, #0f2547, #0b1d3a);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Labels */
+.card label {
+  display: block;
+  text-align: center;
+  margin-bottom: 8px;
+  margin-top: 18px;
+  font-size: 15px;
+  color: #cfd8ff;
+  font-weight: 500;
+}
+
+/* Inputs & Select */
+.card input,
+.card select {
+  width: 100%;
+  padding: 14px;
   border-radius: 10px;
-  max-width: 400px;
-}
-input, select {
-  width: 90%;
-  margin: 10px 0;
-  padding: 10px;
   border: none;
-  border-radius: 6px;
   outline: none;
+  font-size: 15px;
+  background: #ffffff;
+  color: #000000;
 }
-button {
-  background: #64ffda;
-  color: #0a192f;
-  padding: 10px 20px;
+
+/* Focus */
+.card input:focus,
+.card select:focus {
+  box-shadow: 0 0 0 3px rgba(0, 255, 200, 0.4);
+}
+
+/* Button */
+#predict {
+  width: 100%;
+  margin-top: 25px;
+  padding: 14px;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #4dfff3, #2de2e6);
+  color: #002b2b;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-button:hover {
-  background: #52e0c4;
+
+/* Button Hover */
+#predict:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(45, 226, 230, 0.4);
+}
+
+/* Button Disabled */
+#predict:disabled {
+  background: #7aa;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Results Card */
+#result h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+/* Output */
+#output {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #e0e8ff;
+}
+
+/* Output Headings */
+#output h3 {
+  margin-top: 15px;
+  color: #4dfff3;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 22px;
+  }
 }
