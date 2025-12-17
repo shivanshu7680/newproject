@@ -5,3 +5,4 @@ Flask
 Flask-Cors
 gunicorn
 joblib
+scikit-learn
