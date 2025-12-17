@@ -3,7 +3,6 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 import os
-import ee
 import sys
 
 # ✅ backend folder ko python path me add karo
@@ -14,8 +13,8 @@ from ee_processor import get_satellite_data
 app = Flask(__name__)
 CORS(app)
 
-# ✅ Initialize Google Earth Engine
-ee.Initialize()
+# ❌ REMOVE Earth Engine init from here
+# ee.Initialize()
 
 # ✅ Base directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +31,7 @@ p_model = joblib.load(p_model_path)
 k_model = joblib.load(k_model_path)
 
 print("✅ Models loaded successfully.")
+
 
 def get_fertilizer_suggestion(N, P, K):
     suggestion = {
@@ -68,18 +68,22 @@ def predict_nutrients():
         print(f"📍 Predicting for Latitude={lat}, Longitude={lon}")
 
         df = get_satellite_data(lon, lat)
+
+        # ✅ Ensure correct feature order
         df = df[n_model.feature_names_in_]
 
         n_pred = n_model.predict(df)
         p_pred = p_model.predict(df)
         k_pred = k_model.predict(df)
 
-        N_avg, P_avg, K_avg = map(np.mean, [n_pred, p_pred, k_pred])
+        N_avg = float(np.mean(n_pred))
+        P_avg = float(np.mean(p_pred))
+        K_avg = float(np.mean(k_pred))
 
         return jsonify({
-            "Nitrogen_avg": float(N_avg),
-            "Phosphorus_avg": float(P_avg),
-            "Potassium_avg": float(K_avg),
+            "Nitrogen_avg": N_avg,
+            "Phosphorus_avg": P_avg,
+            "Potassium_avg": K_avg,
             "Suggestions": get_fertilizer_suggestion(N_avg, P_avg, K_avg)
         })
 
