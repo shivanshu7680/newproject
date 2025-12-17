@@ -4,3 +4,4 @@ pandas
 Flask
 Flask-Cors
 gunicorn
+joblib
